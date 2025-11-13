@@ -20,36 +20,31 @@ import {
 } from '@/components/ui/chart';
 
 const chartData = [
-  { reason: 'Suspicious TLD', count: 275, fill: 'var(--color-tld)' },
-  { reason: 'IP Address URL', count: 200, fill: 'var(--color-ip)' },
-  { reason: 'Keyword Use', count: 187, fill: 'var(--color-keyword)' },
-  { reason: 'URL Length', count: 173, fill: 'var(--color-length)' },
-  { reason: 'Other', count: 90, fill: 'var(--color-other)' },
+  { reason: 'Deceptive Link', count: 320, fill: 'var(--color-blue)' },
+  { reason: 'Urgent Language', count: 250, fill: 'var(--color-orange)' },
+  { reason: 'Spoofed Sender', count: 210, fill: 'var(--color-green)' },
+  { reason: 'Suspicious TLD', count: 180, fill: 'var(--color-yellow)' },
 ];
 
 const chartConfig = {
   count: {
     label: 'Count',
   },
-  tld: {
-    label: 'Suspicious TLD',
+  blue: {
+    label: 'Deceptive Link',
     color: 'hsl(var(--chart-1))',
   },
-  ip: {
-    label: 'IP Address URL',
+  orange: {
+    label: 'Urgent Language',
     color: 'hsl(var(--chart-2))',
   },
-  keyword: {
-    label: 'Keyword Use',
-    color: 'hsl(var(--chart-3))',
-  },
-  length: {
-    label: 'URL Length',
-    color: 'hsl(var(--chart-4))',
-  },
-  other: {
-    label: 'Other',
+  green: {
+    label: 'Spoofed Sender',
     color: 'hsl(var(--chart-5))',
+  },
+  yellow: {
+    label: 'Suspicious TLD',
+    color: 'hsl(var(--chart-4))',
   },
 } satisfies ChartConfig;
 
@@ -86,7 +81,7 @@ export function PhishingReasonChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Suspicious TLDs are the most common indicator{' '}
+          Deceptive links are the most common indicator{' '}
           <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
