@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Shield, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
-import { useAuth } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import {
   DropdownMenu,
@@ -16,11 +16,11 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useRouter } from 'next/navigation';
 
 export default function Header() {
-  const { user, loading } = useAuth();
+  const { user, isUserLoading: loading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
 
   const handleSignOut = async () => {
-    const auth = (await import('@/firebase')).getAuth();
     if (auth) {
       await signOut(auth);
       router.push('/');

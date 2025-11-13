@@ -11,19 +11,19 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useAuth } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function LoginPage() {
-  const { user, loading } = useAuth();
+  const { user, isUserLoading: loading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
   const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handleGoogleSignIn = async () => {
     setIsSigningIn(true);
-    const auth = (await import('@/firebase')).getAuth();
     if (!auth) return;
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
@@ -36,7 +36,6 @@ export default function LoginPage() {
   };
 
   const handleSignOut = async () => {
-    const auth = (await import('@/firebase')).getAuth();
     if (!auth) return;
     await signOut(auth);
   };
