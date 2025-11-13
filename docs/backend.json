@@ -1,0 +1,180 @@
+{
+  "entities": {
+    "Prediction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Prediction",
+      "type": "object",
+      "description": "Represents a single URL prediction made by the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the prediction. (Primary Key)"
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL that was analyzed. May be hashed for privacy."
+        },
+        "label": {
+          "type": "string",
+          "description": "The predicted label (phishing or legitimate)."
+        },
+        "confidence": {
+          "type": "number",
+          "description": "The confidence score of the prediction (0.00-1.00)."
+        },
+        "topReasons": {
+          "type": "array",
+          "description": "The top contributing reasons for the prediction.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modelVersion": {
+          "type": "string",
+          "description": "The version of the detection model used for the prediction."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The timestamp of the prediction (ISO8601 format).",
+          "format": "date-time"
+        },
+        "clientIp": {
+          "type": "string",
+          "description": "The IP address of the client that made the request (optional, may be anonymized)."
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "label",
+        "confidence",
+        "topReasons",
+        "modelVersion",
+        "timestamp"
+      ]
+    },
+    "Report": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Report",
+      "type": "object",
+      "description": "Represents user feedback on a prediction.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the report. (Primary Key)"
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL that was reported."
+        },
+        "predictedLabel": {
+          "type": "string",
+          "description": "The label predicted by the system."
+        },
+        "correctLabel": {
+          "type": "string",
+          "description": "The user-provided correct label."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The timestamp of the report (ISO8601 format).",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "predictedLabel",
+        "correctLabel",
+        "timestamp"
+      ]
+    },
+    "ModelInfo": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ModelInfo",
+      "type": "object",
+      "description": "Represents the information about the phishing detection model.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the model information. (Primary Key)"
+        },
+        "modelVersion": {
+          "type": "string",
+          "description": "The version of the detection model."
+        },
+        "featureDefinitions": {
+          "type": "array",
+          "description": "Definitions and thresholds for each feature used in the model.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "modelVersion",
+        "featureDefinitions"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/predictions/{predictionId}",
+        "definition": {
+          "entityName": "Prediction",
+          "schema": {
+            "$ref": "#/backend/entities/Prediction"
+          },
+          "description": "Stores prediction results. Writeable only by the service account.",
+          "params": [
+            {
+              "name": "predictionId",
+              "description": "The unique identifier for the prediction."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/reports/{reportId}",
+        "definition": {
+          "entityName": "Report",
+          "schema": {
+            "$ref": "#/backend/entities/Report"
+          },
+          "description": "Stores user feedback on predictions. Writeable only by the service account.",
+          "params": [
+            {
+              "name": "reportId",
+              "description": "The unique identifier for the report."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/model_info/{modelInfoId}",
+        "definition": {
+          "entityName": "ModelInfo",
+          "schema": {
+            "$ref": "#/backend/entities/ModelInfo"
+          },
+          "description": "Stores information about the phishing detection model. Writeable only by the service account.",
+          "params": [
+            {
+              "name": "modelInfoId",
+              "description": "The unique identifier for the model information."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the PhishGuard application, prioritizing security, scalability, and debuggability. It incorporates the principles of Authorization Independence, Structural Segregation, and Access Modeling.\n\n**Authorization Independence:**\nAuthorization independence is achieved through denormalization. Currently, the application only has public facing data (predictions, reports and model info) so the need for user specific or collaborative data does not exist. Should this change, the denormalization strategy would be to copy relevant authorization data (e.g., user roles or group memberships) into the documents requiring authorization. This avoids `get()` calls in security rules.\n\n**Structural Segregation:**\nStructural segregation is enforced by using separate collections for different data types (predictions, reports, and model info). This simplifies security rules as each collection has its own distinct access requirements.  For example, the predictions and reports are written by the server using the service account, and model info written by admins; therefore, they have more restrictive write rules than a user-specific collection would. Should the app use collaborative data, each of those would exist in different collections.\n\n**Access Modeling:**\nThe application uses the following access models:\n\n*   **Predictions & Reports:** These are globally accessible for reading (e.g., for analytics) but write-protected, only accessible through the service account.\n*   **ModelInfo:** Accessible to admins for modification. Could be secured using an `/roles_admin/{uid}` collection. Writeable by service account.\n\n**QAPs (Rules are not Filters):**\nThe structure supports secure `list` operations by segregating data based on its access requirements. Since everything is effectively public read, `list` operations do not need filtering at the rule level. If user-specific data were added, that would live in collections `/users/{uid}/...` which would allow listing only the data owned by a specific user based on the path.\n\n**Invariants:**\nThe structure implicitly supports invariants like ownership (currently by the service account) through security rules that restrict write access. Timestamps are managed by the server upon creation, and could have rules to ensure they are immutable."
+  }
+}

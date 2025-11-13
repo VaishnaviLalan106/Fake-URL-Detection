@@ -1,0 +1,61 @@
+/**
+ * @fileoverview Firestore Security Rules for PhishGuard.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict separation of read and write permissions based on data type.
+ * All data is globally readable, but writes are restricted to the service account or administrative roles.
+ *
+ * Data Structure:
+ * - /predictions/{predictionId}: Stores prediction results (written by service account).
+ * - /reports/{reportId}: Stores user feedback (written by service account).
+ * - /model_info/{modelInfoId}: Stores model information (written by service account).
+ *
+ * Key Security Decisions:
+ * - All collections are publicly readable.
+ * - Writes to all collections are restricted to the service account.
+ * - No user-specific data is stored, so user-based authorization is not required.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Allows anyone to read prediction data, but only the service account to create, update, or delete it.
+     * @path /predictions/{predictionId}
+     * @allow (get, list): Any authenticated or unauthenticated user can read prediction data.
+     * @allow (create, update, delete): Only the service account can modify prediction data.
+     * @deny (create, update, delete): A user attempting to create, update, or delete prediction data.
+     * @principle Enforces service account ownership for writes.
+     */
+    match /predictions/{predictionId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Allows anyone to read report data, but only the service account to create, update, or delete it.
+     * @path /reports/{reportId}
+     * @allow (get, list): Any authenticated or unauthenticated user can read report data.
+     * @allow (create, update, delete): Only the service account can modify report data.
+     * @deny (create, update, delete): A user attempting to create, update, or delete report data.
+     * @principle Enforces service account ownership for writes.
+     */
+    match /reports/{reportId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Allows anyone to read model information, but only the service account to create, update, or delete it.
+     * @path /model_info/{modelInfoId}
+     * @allow (get, list): Any authenticated or unauthenticated user can read model information.
+     * @allow (create, update, delete): Only the service account can modify model information.
+     * @deny (create, update, delete): A user attempting to create, update, or delete model information.
+     * @principle Enforces service account ownership for writes.
+     */
+    match /model_info/{modelInfoId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+  }
+}
