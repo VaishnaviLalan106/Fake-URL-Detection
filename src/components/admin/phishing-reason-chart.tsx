@@ -20,29 +20,29 @@ import {
 } from '@/components/ui/chart';
 
 const chartData = [
-  { reason: 'Deceptive Link', count: 320, fill: 'var(--color-blue)' },
-  { reason: 'Urgent Language', count: 250, fill: 'var(--color-orange)' },
-  { reason: 'Spoofed Sender', count: 210, fill: 'var(--color-green)' },
-  { reason: 'Suspicious TLD', count: 180, fill: 'var(--color-yellow)' },
+  { reason: 'Deceptive Link', count: 320, fill: 'var(--color-deceptive)' },
+  { reason: 'Urgent Language', count: 250, fill: 'var(--color-urgent)' },
+  { reason: 'Spoofed Sender', count: 210, fill: 'var(--color-spoofed)' },
+  { reason: 'Suspicious TLD', count: 180, fill: 'var(--color-tld)' },
 ];
 
 const chartConfig = {
   count: {
     label: 'Count',
   },
-  blue: {
+  deceptive: {
     label: 'Deceptive Link',
     color: 'hsl(var(--chart-1))',
   },
-  orange: {
+  urgent: {
     label: 'Urgent Language',
     color: 'hsl(var(--chart-2))',
   },
-  green: {
+  spoofed: {
     label: 'Spoofed Sender',
     color: 'hsl(var(--chart-5))',
   },
-  yellow: {
+  tld: {
     label: 'Suspicious TLD',
     color: 'hsl(var(--chart-4))',
   },
