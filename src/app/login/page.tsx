@@ -23,8 +23,11 @@ export default function LoginPage() {
   const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handleGoogleSignIn = async () => {
+    if (!auth) {
+      console.error("Auth service is not available yet.");
+      return;
+    }
     setIsSigningIn(true);
-    if (!auth) return;
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
       router.push('/');
@@ -78,7 +81,7 @@ export default function LoginPage() {
           ) : (
             <Button
               onClick={handleGoogleSignIn}
-              disabled={isSigningIn}
+              disabled={isSigningIn || !auth}
               className="w-full"
             >
               {isSigningIn ? (
