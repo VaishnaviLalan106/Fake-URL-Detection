@@ -20,7 +20,7 @@ interface HistoryListProps {
 export default function HistoryList({ history, onSelect }: HistoryListProps) {
   if (history.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center min-h-[400px] text-center p-6">
+      <Card className="flex flex-col items-center justify-center min-h-[438px] text-center p-6 border-dashed border-2">
         <CardHeader>
           <CardTitle>No History</CardTitle>
           <CardDescription>
@@ -32,9 +32,9 @@ export default function HistoryList({ history, onSelect }: HistoryListProps) {
   }
 
   return (
-    <Card className="min-h-[400px]">
+    <Card className="min-h-[438px]">
       <CardContent className="p-0">
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-[438px]">
           <div className="p-6 space-y-4">
             {history.map((item, index) => (
               <button

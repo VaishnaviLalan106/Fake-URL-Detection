@@ -21,6 +21,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Info, AlertTriangle, ShieldCheck, Flag } from 'lucide-react';
 import type { PredictionResult } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { ReasonsChart } from './reasons-chart';
+
 
 interface ResultCardProps {
   result: PredictionResult | null;
@@ -72,7 +74,7 @@ export default function ResultCard({
 
   if (!result) {
     return (
-      <Card className="flex flex-col items-center justify-center min-h-[400px] text-center p-6">
+      <Card className="flex flex-col items-center justify-center min-h-[438px] text-center p-6 border-dashed border-2">
         <Info className="h-12 w-12 text-muted-foreground mb-4" />
         <CardHeader>
           <CardTitle>Awaiting Analysis</CardTitle>
@@ -90,7 +92,7 @@ export default function ResultCard({
   return (
     <TooltipProvider>
       <Card
-        className={`min-h-[400px] border-2 ${
+        className={`min-h-[438px] border-2 ${
           isPhishing ? 'border-destructive' : 'border-green-500'
         }`}
       >
@@ -128,26 +130,9 @@ export default function ResultCard({
               className={isPhishing ? '[&>div]:bg-destructive' : '[&>div]:bg-green-500'}
             />
           </div>
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Top Reasons</h4>
-            <ul className="space-y-2">
-              {result.top_reasons.map((reason) => (
-                <li key={reason.feature} className="flex items-center gap-2 text-sm">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-4 w-4 text-muted-foreground cursor-pointer" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{reason.explanation}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <span className="flex-grow">{reason.feature.replace(/_/g, ' ')}</span>
-                  <Badge variant="secondary" className="font-mono">
-                    {String(reason.value)}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
+          <div className="space-y-3">
+            <h4 className="text-sm font-medium">Risk Factors</h4>
+            <ReasonsChart reasons={result.top_reasons} />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-4">
@@ -172,7 +157,7 @@ export default function ResultCard({
 
 function ResultSkeleton() {
   return (
-    <Card className="min-h-[400px]">
+    <Card className="min-h-[438px]">
       <CardHeader className="text-center">
         <Skeleton className="h-8 w-48 mx-auto" />
         <Skeleton className="h-4 w-full max-w-sm mx-auto mt-2" />

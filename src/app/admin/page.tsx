@@ -1,13 +1,8 @@
 'use client';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import StatsCards from '@/components/admin/stats-cards';
 import RecentReports from '@/components/admin/recent-reports';
+import { PredictionTrendChart } from '@/components/admin/prediction-trend-chart';
+import { PhishingReasonChart } from '@/components/admin/phishing-reason-chart';
 
 // Mock data, to be replaced with API calls
 const stats = {
@@ -56,6 +51,11 @@ export default function AdminDashboard() {
         </div>
 
         <StatsCards stats={stats} />
+
+        <div className="grid gap-8 md:grid-cols-2">
+          <PredictionTrendChart />
+          <PhishingReasonChart />
+        </div>
 
         <RecentReports reports={reports} />
       </div>
