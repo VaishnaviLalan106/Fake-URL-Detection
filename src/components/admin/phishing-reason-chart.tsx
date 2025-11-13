@@ -16,17 +16,19 @@ import {
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
+  type ChartConfig,
 } from '@/components/ui/chart';
 
 const chartData = [
-  { reason: 'Suspicious TLD', value: 45, fill: 'var(--color-tld)' },
-  { reason: 'IP Address URL', value: 30, fill: 'var(--color-ip)' },
-  { reason: 'Keyword Use', value: 15, fill: 'var(--color-keyword)' },
-  { reason: 'URL Length', value: 10, fill: 'var(--color-length)' },
+  { reason: 'Suspicious TLD', count: 275, fill: 'var(--color-tld)' },
+  { reason: 'IP Address URL', count: 200, fill: 'var(--color-ip)' },
+  { reason: 'Keyword Use', count: 187, fill: 'var(--color-keyword)' },
+  { reason: 'URL Length', count: 173, fill: 'var(--color-length)' },
+  { reason: 'Other', count: 90, fill: 'var(--color-other)' },
 ];
 
 const chartConfig = {
-  value: {
+  count: {
     label: 'Count',
   },
   tld: {
@@ -45,7 +47,11 @@ const chartConfig = {
     label: 'URL Length',
     color: 'hsl(var(--chart-4))',
   },
-};
+  other: {
+    label: 'Other',
+    color: 'hsl(var(--chart-5))',
+  },
+} satisfies ChartConfig;
 
 export function PhishingReasonChart() {
   return (
@@ -66,7 +72,7 @@ export function PhishingReasonChart() {
             />
             <Pie
               data={chartData}
-              dataKey="value"
+              dataKey="count"
               nameKey="reason"
               innerRadius={60}
               strokeWidth={5}
