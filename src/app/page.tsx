@@ -9,6 +9,7 @@ import { useHistory } from '@/hooks/use-history';
 import { ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const [result, setResult] = useState<PredictionResult | null>(null);
@@ -60,10 +61,14 @@ export default function Home() {
 
   return (
     <div className="w-full">
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gray-100 dark:bg-gray-800/20">
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-transparent">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-            <div className="flex flex-col justify-center space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
                   Stay Ahead of Phishing Scams
@@ -80,20 +85,29 @@ export default function Home() {
                 />
                 {error && <p className="text-sm text-destructive">{error}</p>}
               </div>
-            </div>
-            <div className="relative flex items-center justify-center">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative flex items-center justify-center">
               {heroImage && (
                 <Image
                   src={heroImage.imageUrl}
                   alt={heroImage.description}
                   width={400}
                   height={400}
-                  className="rounded-full object-cover aspect-square shadow-2xl animate-pulse-slow"
+                  className="rounded-full object-cover aspect-square shadow-2xl"
                   data-ai-hint={heroImage.imageHint}
                 />
               )}
-              <ShieldCheck className="absolute text-primary-foreground h-1/2 w-1/2" />
-            </div>
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ShieldCheck className="absolute text-primary-foreground h-1/2 w-1/2 top-1/4 left-1/4" />
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
