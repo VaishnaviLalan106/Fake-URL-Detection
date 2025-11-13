@@ -66,7 +66,7 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="space-y-2"
             >
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline text-gradient">
                 Instant AI-Powered URL Analysis
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
@@ -94,13 +94,14 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
+        className="transition-transform duration-300 ease-in-out hover:scale-[1.02]"
       >
         <GlobalStats />
       </motion.div>
 
       <div className="container px-4 md:px-6 my-12">
         <div className="grid gap-8 md:grid-cols-2">
-          <div>
+          <div className="transition-transform duration-300 ease-in-out hover:scale-[1.02]">
             <h2 className="text-2xl font-bold mb-4 font-headline">Analysis Result</h2>
             <ResultCard
               result={result}
@@ -109,7 +110,7 @@ export default function Home() {
               onReport={handleReport}
             />
           </div>
-          <div>
+          <div className="transition-transform duration-300 ease-in-out hover:scale-[1.02]">
             <h2 className="text-2xl font-bold mb-4 font-headline">Recent Checks</h2>
             <HistoryList history={history} onSelect={handleHistorySelect} />
           </div>

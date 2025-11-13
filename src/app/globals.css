@@ -75,4 +75,9 @@ body {
     background-image: radial-gradient(ellipse 80% 80% at 50% -20%,rgba(120,119,198,0.3), hsla(0,0%,100%,0));
     background-color: #0d1117;
   }
+  .text-gradient {
+    background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--chart-2)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }

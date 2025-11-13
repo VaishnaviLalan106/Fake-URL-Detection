@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Lexend } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
@@ -8,6 +8,8 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import Sidebar from '@/components/sidebar';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const lexend = Lexend({ subsets: ['latin'], variable: '--font-lexend' });
+
 
 export const metadata: Metadata = {
   title: 'PhishGuard - AI-Powered Phishing URL Detector',
@@ -30,7 +32,8 @@ export default function RootLayout({
       <body
         className={cn(
           'relative h-full font-body antialiased',
-          inter.variable
+          inter.variable,
+          lexend.variable
         )}
       >
         <FirebaseClientProvider>
