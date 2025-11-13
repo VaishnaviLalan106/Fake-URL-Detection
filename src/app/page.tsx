@@ -66,7 +66,7 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="space-y-2"
             >
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline text-gradient">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline text-foreground">
                 Instant AI-Powered URL Analysis
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
