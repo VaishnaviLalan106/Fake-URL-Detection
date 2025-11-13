@@ -42,7 +42,7 @@ export function PredictionTrendChart() {
         <CardTitle>Prediction Trends</CardTitle>
         <CardDescription>
           Showing total predictions for the last 6 months
-        </Description>
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
