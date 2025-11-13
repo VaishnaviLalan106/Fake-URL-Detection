@@ -21,18 +21,25 @@ export default function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
     if (!auth) {
-      console.error("Auth service is not available yet.");
+      setError("Authentication service is not ready. Please try again in a moment.");
       return;
     }
     setIsSigningIn(true);
+    setError(null);
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
       router.push('/');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error signing in with Google', error);
+      if (error.code === 'auth/operation-not-allowed') {
+        setError('Google Sign-In is not enabled for this project. Please enable it in the Firebase console.');
+      } else {
+        setError(error.message || 'An unexpected error occurred during sign-in.');
+      }
     } finally {
       setIsSigningIn(false);
     }
@@ -41,6 +48,7 @@ export default function LoginPage() {
   const handleSignOut = async () => {
     if (!auth) return;
     await signOut(auth);
+    router.push('/');
   };
 
   if (loading) {
@@ -60,7 +68,7 @@ export default function LoginPage() {
           </CardTitle>
           <CardDescription>
             {user
-              ? 'You are now logged in.'
+              ? 'You are logged in and ready to go.'
               : 'Sign in with your Google account to continue.'}
           </CardDescription>
         </CardHeader>
@@ -70,7 +78,7 @@ export default function LoginPage() {
               <Avatar>
                 <AvatarImage src={user.photoURL || ''} alt={user.displayName || ''} />
                 <AvatarFallback>
-                  {user.displayName?.charAt(0).toUpperCase()}
+                  {user.displayName?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -79,32 +87,35 @@ export default function LoginPage() {
               </div>
             </div>
           ) : (
-            <Button
-              onClick={handleGoogleSignIn}
-              disabled={isSigningIn || !auth}
-              className="w-full"
-            >
-              {isSigningIn ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <svg
-                  className="mr-2 h-4 w-4"
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fab"
-                  data-icon="google"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 488 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M488 261.8C488 403.3 381.5 512 244 512 109.8 512 0 402.2 0 261.8S109.8 11.6 244 11.6c67.3 0 121.2 24.8 164.2 65.7l-64.6 63.5c-20-19.1-46.7-30.8-77.6-30.8-59.2 0-107.4 48.2-107.4 107.4s48.2 107.4 107.4 107.4c68.1 0 97.9-48.2 101-72.9h-101V261.8h190.5c1.9 10.6 3.1 22.1 3.1 34.z"
-                  ></path>
-                </svg>
-              )}
-              Sign in with Google
-            </Button>
+            <div className="space-y-2">
+              <Button
+                onClick={handleGoogleSignIn}
+                disabled={isSigningIn || !auth}
+                className="w-full"
+              >
+                {isSigningIn ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <svg
+                    className="mr-2 h-4 w-4"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fab"
+                    data-icon="google"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 488 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M488 261.8C488 403.3 381.5 512 244 512 109.8 512 0 402.2 0 261.8S109.8 11.6 244 11.6c67.3 0 121.2 24.8 164.2 65.7l-64.6 63.5c-20-19.1-46.7-30.8-77.6-30.8-59.2 0-107.4 48.2-107.4 107.4s48.2 107.4 107.4 107.4c68.1 0 97.9-48.2 101-72.9h-101V261.8h190.5c1.9 10.6 3.1 22.1 3.1 34.z"
+                    ></path>
+                  </svg>
+                )}
+                Sign in with Google
+              </Button>
+              {error && <p className="text-sm text-destructive text-center">{error}</p>}
+            </div>
           )}
         </CardContent>
         {user && (
