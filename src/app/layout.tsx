@@ -3,9 +3,9 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
-import Footer from '@/components/footer';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import Sidebar from '@/components/sidebar';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full dark">
        <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -34,12 +34,14 @@ export default function RootLayout({
         )}
       >
         <FirebaseClientProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow flex flex-col items-center justify-center">
-              {children}
-            </main>
-            <Footer />
+          <div className="flex min-h-screen w-full">
+            <Sidebar />
+            <div className="flex flex-col flex-1">
+              <Header />
+              <main className="flex-grow flex flex-col items-center justify-center">
+                {children}
+              </main>
+            </div>
           </div>
           <Toaster />
         </FirebaseClientProvider>

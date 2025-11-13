@@ -28,20 +28,12 @@ export default function Header() {
   };
 
   return (
-    <header className="px-4 lg:px-6 h-16 flex items-center bg-background border-b">
+    <header className="px-4 lg:px-6 h-16 flex items-center bg-transparent border-b">
       <Link href="/" className="flex items-center justify-center">
         <Shield className="h-6 w-6 text-primary" />
         <span className="ml-2 text-lg font-semibold font-headline">PhishGuard</span>
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-        <Button variant="ghost" asChild>
-          <Link
-            href="/admin"
-            className="text-sm font-medium hover:underline underline-offset-4"
-          >
-            Admin
-          </Link>
-        </Button>
         {loading ? (
           <div className="h-8 w-20 rounded-md bg-muted animate-pulse" />
         ) : user ? (
