@@ -54,6 +54,18 @@ export function PredictionTrendChart() {
               right: 12,
             }}
           >
+            {/* 🌈 Define gradient colors */}
+            <defs>
+              <linearGradient id="colorLegitimate" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#4CAF50" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#4CAF50" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorPhishing" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#F44336" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#F44336" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -66,20 +78,22 @@ export function PredictionTrendChart() {
               cursor={false}
               content={<ChartTooltipContent indicator="dot" />}
             />
+
+            {/* ✅ Gradient-filled areas */}
             <Area
               dataKey="legitimate"
               type="natural"
-              fill="var(--color-legitimate)"
-              fillOpacity={0.4}
-              stroke="var(--color-legitimate)"
+              stroke="#2E7D32"
+              fill="url(#colorLegitimate)"
+              strokeWidth={2}
               stackId="a"
             />
             <Area
               dataKey="phishing"
               type="natural"
-              fill="var(--color-phishing)"
-              fillOpacity={0.4}
-              stroke="var(--color-phishing)"
+              stroke="#C62828"
+              fill="url(#colorPhishing)"
+              strokeWidth={2}
               stackId="a"
             />
           </AreaChart>
