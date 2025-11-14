@@ -19,32 +19,34 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart';
 
+// 🟢 Updated: Added 4 custom bright colors for your chart
 const chartData = [
-  { reason: 'Deceptive Link', count: 320, fill: 'var(--color-deceptive)' },
-  { reason: 'Urgent Language', count: 250, fill: 'var(--color-urgent)' },
-  { reason: 'Spoofed Sender', count: 210, fill: 'var(--color-spoofed)' },
-  { reason: 'Suspicious TLD', count: 180, fill: 'var(--color-tld)' },
+  { reason: 'Deceptive Link', count: 320, fill: '#FF6B6B' },   // red-pink
+  { reason: 'Urgent Language', count: 250, fill: '#FFD93D' },  // yellow
+  { reason: 'Spoofed Sender', count: 210, fill: '#6BCB77' },   // green
+  { reason: 'Suspicious TLD', count: 180, fill: '#4D96FF' },   // blue
 ];
 
+// 🟢 Updated: Match config colors to chartData colors
 const chartConfig = {
   count: {
     label: 'Count',
   },
   deceptive: {
     label: 'Deceptive Link',
-    color: 'hsl(var(--chart-1))',
+    color: '#FF6B6B',
   },
   urgent: {
     label: 'Urgent Language',
-    color: 'hsl(var(--chart-2))',
+    color: '#FFD93D',
   },
   spoofed: {
     label: 'Spoofed Sender',
-    color: 'hsl(var(--chart-5))',
+    color: '#6BCB77',
   },
   tld: {
     label: 'Suspicious TLD',
-    color: 'hsl(var(--chart-4))',
+    color: '#4D96FF',
   },
 } satisfies ChartConfig;
 
@@ -55,6 +57,7 @@ export function PhishingReasonChart() {
         <CardTitle>Top Phishing Reasons</CardTitle>
         <CardDescription>Breakdown by detection method</CardDescription>
       </CardHeader>
+
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
@@ -79,6 +82,7 @@ export function PhishingReasonChart() {
           </PieChart>
         </ChartContainer>
       </CardContent>
+
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Deceptive links are the most common indicator{' '}
